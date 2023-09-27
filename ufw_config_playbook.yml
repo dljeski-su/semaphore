@@ -1,0 +1,47 @@
+---
+- name: Configure UFW Settings
+  hosts: ansible_test
+  become: yes
+  tasks:
+
+    # Installs UFW
+    - name: Install UFW
+      apt:
+        name: ufw
+        state: present
+
+    # Set the default incoming rule to deny
+    - name: Set default rule for incoming traffic to deny
+      ufw:
+        direction: incoming
+        default: deny
+
+    # Allow all outgoing traffic by default
+    - name: Set default rule for outgoing traffic to allow
+      ufw:
+        direction: outgoing
+        default: allow
+
+    # Allow SSH from specific subnets
+    - name: Allow SSH traffic from specific subnets
+      ufw:
+        rule: allow
+        src: "{{ item }}" # This uses looped items below
+        port: 22
+        proto: tcp
+      loop:
+        - 128.230.0.0/16
+        - 10.0.0.0/8
+
+    # Enable UFW
+    - name: Enable UFW
+      ufw:
+        state: enabled
+
+# Replacing
+# ufw default deny incoming
+# ufw default allow outgoing
+# ufw allow from 128.230.0.0/16 to any port 22
+# ufw allow from 10.0.0.0/8 to any port 22
+# ufw enable
+

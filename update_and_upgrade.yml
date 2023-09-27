@@ -1,0 +1,14 @@
+---
+- name: Update and Upgrade Debian/Ubuntu System
+  hosts: ansible_test
+  become: yes  # To run tasks as sudo
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Perform a dist-upgrade
+      apt:
+        upgrade: dist
+        update_cache: yes
+        cache_valid_time: 3600  # Cache is valid for 1 hour, to avoid updating it again in this session

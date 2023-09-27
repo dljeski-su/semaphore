@@ -1,0 +1,19 @@
+---
+- name: Update and Upgrade System
+  hosts: ansible_test
+  become: yes
+
+  tasks:
+    - name: Update Repositories
+      apt:
+        update_cache: yes
+
+    - name: Dist-Upgrade
+      apt:
+        upgrade: dist
+      register: upgrade_result
+
+    - name: Display Updated Packages
+      debug:
+        msg: "{{ upgrade_result.stdout_lines }}"
+      when: upgrade_result is changed
