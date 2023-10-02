@@ -17,3 +17,5 @@
       debug:
         msg: "{{ upgrade_result.stdout_lines }}"
       when: upgrade_result is changed
+
+# This will run apt update and dist-upgrade, then display what was changed
